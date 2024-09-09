@@ -150,7 +150,6 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
         print(f"New user entry \"{pollAnswer.user.id}\" has been added to the scores.json")
         scores = JSONHandler_.json_reader("scores.json")
 
-    time.sleep(0.5)
     if pollAnswer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)]:
         scores[str(pollAnswer.user.id)][0] += 1
         scores[str(pollAnswer.user.id)][1] += 1
