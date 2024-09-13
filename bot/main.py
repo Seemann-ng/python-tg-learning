@@ -23,7 +23,7 @@ class JSONHandler_:
             Data from .json file.
 
         """
-        with open(filename, 'r', encoding='utf-8') as openfile:
+        with open(filename, "r", encoding="utf-8") as openfile:
             readable_data = json.load(openfile)
         return readable_data
 
@@ -39,7 +39,7 @@ class JSONHandler_:
             None.
 
         """
-        with open(filename, 'w', encoding='utf-8') as openjson:
+        with open(filename, "w", encoding="utf-8") as openjson:
             json.dump(written, openjson, indent=4, ensure_ascii=False)
 
     @staticmethod
@@ -105,19 +105,18 @@ def active_polls_checker(usr_id: int) -> List[int] or False:
 
     """
     active_polls = JSONHandler_.json_reader("active_polls.json")
-    message_ids = []
+    poll_ids = []
     for poll in active_polls:
-        print(poll[1])
-        if active_polls[poll][1] == usr_id:
-            message_ids.append(active_polls[poll][0])
-    if not message_ids:
+        if active_polls[poll][0] == usr_id:
+            poll_ids.append(poll)
+    if not poll_ids:
         return False
     else:
-        return message_ids
+        return poll_ids
 
 
 def send_quiz(cid):
-    """Send quiz-type poll to user; update active_polls.json adding info about poll ID and correct option index.
+    """Send quiz-type poll to user; update active_polls.json adding info about poll and user IDs and correct option index.
 
     Args:
         cid: Chat ID of the chat with user.
@@ -126,7 +125,7 @@ def send_quiz(cid):
         None.
 
     """
-    bot.send_chat_action(cid, 'typing')
+    bot.send_chat_action(cid, "typing")
     time.sleep(1)
     question_number = random.randint(0, len(questions) - 1)
     answer_options_list = [option for option in questions[question_number]["answer_options"]]
@@ -143,7 +142,6 @@ def send_quiz(cid):
     )
     poll_info = {
         poll.json["poll"]["id"]: [
-            poll.json["message_id"],
             poll.json["chat"]["id"],
             poll.json["poll"]["correct_option_id"]
         ]
@@ -152,19 +150,22 @@ def send_quiz(cid):
     print(f"Poll {poll.json["poll"]["id"]} has been opened.")
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=["start"])
 def start_command(message):
     """Start chat with user by sending them welcome message and a poll (if there is no active one) once /start command received.
 
     Args:
-        message: Received message with /start command in it.
+        message: Message from User with /start command in it.
 
     Returns:
         None.
 
     """
+    print(
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
+    )
     print(f"New chat with user {message.from_user.username} (id {message.from_user.id}) has been started.")
-    bot.send_chat_action(message.chat.id, 'typing')
+    bot.send_chat_action(message.chat.id, "typing")
     time.sleep(1)
     bot.send_message(message.chat.id, "Howdy, ready for some questions?")
     if active_polls_checker(message.chat.id):
@@ -176,19 +177,22 @@ def start_command(message):
         send_quiz(message.chat.id)
 
 
-@bot.message_handler(commands=['myscore'])
-def show_my_score(message):
+@bot.message_handler(commands=["my_score"])
+def my_score_command(message):
     """Tell user their score in X-out-of-Y format or inform them they aren't scored yet.
 
     Args:
-        message: Received message with /myscore command in it.
+        message: Message from User with /my_score command in it.
 
     Returns:
         None.
 
     """
+    print(
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
+    )
     print(f"User {message.from_user.username} (id {message.from_user.id}) requested their score.")
-    bot.send_chat_action(message.chat.id, 'typing')
+    bot.send_chat_action(message.chat.id, "typing")
     time.sleep(1)
 
     if str(message.from_user.id) in list(JSONHandler_.json_reader("scores.json"))[:]:
@@ -197,10 +201,10 @@ def show_my_score(message):
             message.chat.id,
             f"Your score is {user_scores[0]} out of {user_scores[1]} ({round(user_scores[0]/user_scores[1] * 100)}%)."
         )
-        print(f"Score request succeed.")
+        print(f"Score request for user ID {message.from_user.id} succeed.")
     else:
         bot.send_message(message.chat.id, "Sorry, You haven't been scored yet.")
-        print(f"Score entry wasn't found.")
+        print(f"Score entry {message.from_user.id} wasn't found.")
 
 
 @bot.message_handler(commands=["question"])
@@ -208,14 +212,14 @@ def question_command(message):
     """Send user a poll once the /question command is received if there is no active one.
 
     Args:
-        message: Received message with /question command in it.
+        message: Message from User with /question command in it.
 
     Returns:
         None.
 
     """
     print(
-        f"Message: \"{message.text}\" from user {message.from_user.username} (id {message.from_user.id}) has been received."
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
     if active_polls_checker(message.chat.id):
         bot.send_message(
@@ -224,6 +228,52 @@ def question_command(message):
         )
     else:
         send_quiz(message.chat.id)
+
+
+@bot.message_handler(commands=["clear"])
+def clear_command(message):
+    """Remove info about active polls related to User from active_polls.json.
+
+    Args:
+        message: Message from User with /clear command in it.
+
+    Returns:
+        None.
+
+    """
+    print(
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
+    )
+    active_polls = active_polls_checker(message.chat.id)
+    if active_polls:
+        for poll in active_polls:
+            JSONHandler_.json_dict_popper("active_polls.json", poll)
+            print(f"Poll {poll} has been removed from active_polls.json.")
+    bot.send_message(
+        message.chat.id,
+        "Your chat history has been cleared for the bot.\n(Your score hasn't been changed)"
+                     )
+    print(f"Active polls have been cleared for user {message.from_user.id} (id {message.chat.id}).")
+
+
+@bot.message_handler(commands=["clear_my_score"])
+def clear_my_score_command(message):
+    """Remove score entry of User from scores.json.
+
+    Args:
+        message: Message from User with /clear_my_score command in it.
+
+    Returns:
+        None.
+
+    """
+    print(
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
+    )
+    if str(message.from_user.id) in list(JSONHandler_.json_reader("scores.json"))[:]:
+        JSONHandler_.json_dict_popper("scores.json", str(message.from_user.id))
+    bot.send_message(message.chat.id, "Your score record has been removed.")
+    print(f"Score record for user {message.from_user.username} (id {message.from_user.id}) has been removed.")
 
 
 @bot.poll_answer_handler()
