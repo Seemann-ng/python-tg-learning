@@ -304,13 +304,13 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
         print(f"New user entry \"{pollAnswer.user.id}\" has been added to the scores.json.")
         scores = JSONHandler_.json_reader("scores.json")
 
-    if pollAnswer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)][2]:
+    if pollAnswer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)][1]:
         """Checking if the answer is correct and update scores variable accordingly.
         
         """
         scores[str(pollAnswer.user.id)][0] += 1
         scores[str(pollAnswer.user.id)][1] += 1
-    elif pollAnswer.option_ids[0] != JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)][2]:
+    elif pollAnswer.option_ids[0] != JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)][1]:
         scores[str(pollAnswer.user.id)][1] += 1
 
     JSONHandler_.json_dict_updater("scores.json", scores)
