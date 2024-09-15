@@ -13,7 +13,8 @@ bot = telebot.TeleBot(credentials.BOT_TOKEN, parse_mode=None)
 logging.basicConfig(
     filename="log.txt", filemode="w",
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
+    level=logging.INFO
+)
 
 
 class JSONHandler_:
