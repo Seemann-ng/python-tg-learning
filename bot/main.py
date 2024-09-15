@@ -1,4 +1,5 @@
 import json
+import logging
 import random
 import time
 from typing import List
@@ -9,6 +10,10 @@ import telebot.types as types
 import credentials
 
 bot = telebot.TeleBot(credentials.BOT_TOKEN, parse_mode=None)
+logging.basicConfig(
+    filename="log.txt", filemode="w",
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
 
 
 class JSONHandler_:
@@ -147,7 +152,7 @@ def send_quiz(cid):
         ]
     }
     JSONHandler_.json_dict_updater("active_polls.json", poll_info)
-    print(f"Poll {poll.json["poll"]["id"]} has been opened.")
+    logging.info(f"Poll {poll.json["poll"]["id"]} has been opened.")
 
 
 @bot.message_handler(commands=["start"])
@@ -161,10 +166,10 @@ def start_command(message):
         None.
 
     """
-    print(
+    logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
-    print(f"New chat with user {message.from_user.username} (id {message.from_user.id}) has been started.")
+    logging.info(f"New chat with user {message.from_user.username} (id {message.from_user.id}) has been started.")
     bot.send_chat_action(message.chat.id, "typing")
     time.sleep(1)
     bot.send_message(message.chat.id, "Howdy, ready for some questions?")
@@ -188,10 +193,10 @@ def my_score_command(message):
         None.
 
     """
-    print(
+    logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
-    print(f"User {message.from_user.username} (id {message.from_user.id}) requested their score.")
+    logging.info(f"User {message.from_user.username} (id {message.from_user.id}) requested their score.")
     bot.send_chat_action(message.chat.id, "typing")
     time.sleep(1)
 
@@ -201,10 +206,10 @@ def my_score_command(message):
             message.chat.id,
             f"Your score is {user_scores[0]} out of {user_scores[1]} ({round(user_scores[0]/user_scores[1] * 100)}%)."
         )
-        print(f"Score request for user ID {message.from_user.id} succeed.")
+        logging.info(f"Score request for user ID {message.from_user.id} succeed.")
     else:
         bot.send_message(message.chat.id, "Sorry, You haven't been scored yet.")
-        print(f"Score entry {message.from_user.id} wasn't found.")
+        logging.info(f"Score entry {message.from_user.id} wasn't found.")
 
 
 @bot.message_handler(commands=["question"])
@@ -218,7 +223,7 @@ def question_command(message):
         None.
 
     """
-    print(
+    logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
     if active_polls_checker(message.chat.id):
@@ -241,19 +246,19 @@ def clear_command(message):
         None.
 
     """
-    print(
+    logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
     active_polls = active_polls_checker(message.chat.id)
     if active_polls:
         for poll in active_polls:
             JSONHandler_.json_dict_popper("active_polls.json", poll)
-            print(f"Poll {poll} has been removed from active_polls.json.")
+            logging.info(f"Poll {poll} has been removed from active_polls.json.")
     bot.send_message(
         message.chat.id,
         "Your chat history has been cleared for the bot.\n(Your score hasn't been changed)"
-                     )
-    print(f"Active polls have been cleared for user {message.from_user.id} (id {message.chat.id}).")
+    )
+    logging.info(f"Active polls have been cleared for user {message.from_user.id} (id {message.chat.id}).")
 
 
 @bot.message_handler(commands=["clear_my_score"])
@@ -267,13 +272,13 @@ def clear_my_score_command(message):
         None.
 
     """
-    print(
+    logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
     if str(message.from_user.id) in list(JSONHandler_.json_reader("scores.json"))[:]:
         JSONHandler_.json_dict_popper("scores.json", str(message.from_user.id))
     bot.send_message(message.chat.id, "Your score record has been removed.")
-    print(f"Score record for user {message.from_user.username} (id {message.from_user.id}) has been removed.")
+    logging.info(f"Score record for user {message.from_user.username} (id {message.from_user.id}) has been removed.")
 
 
 @bot.poll_answer_handler()
@@ -287,7 +292,7 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
         None.
 
     """
-    print(f"User {pollAnswer.user.username} (id {pollAnswer.user.id}) answered {pollAnswer.option_ids[0]}")
+    logging.info(f"User {pollAnswer.user.username} (id {pollAnswer.user.id}) answered {pollAnswer.option_ids[0]}")
     initial_user_score = {
         pollAnswer.user.id: [
             0,
@@ -301,7 +306,7 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
         
         """
         JSONHandler_.json_dict_updater("scores.json", initial_user_score)
-        print(f"New user entry \"{pollAnswer.user.id}\" has been added to the scores.json.")
+        logging.info(f"New user entry \"{pollAnswer.user.id}\" has been added to the scores.json.")
         scores = JSONHandler_.json_reader("scores.json")
 
     if pollAnswer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)][1]:
@@ -317,14 +322,14 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
     """Update scores.json file.
     
     """
-    print(f"User score for entry \"{pollAnswer.user.id}\" has been updated.")
+    logging.info(f"User score for entry \"{pollAnswer.user.id}\" has been updated.")
 
-    print(f"Active poll {pollAnswer.poll_id} is being closed.")
+    logging.info(f"Active poll {pollAnswer.poll_id} is being closed.")
     JSONHandler_.json_dict_popper("active_polls.json", pollAnswer.poll_id)
     """Deleting info about current poll from active_polls.json file.
     
     """
-    print(f"Poll has been closed.")
+    logging.info(f"Poll has been closed.")
     bot.send_chat_action(pollAnswer.user.id, 'typing')
     time.sleep(1)
     if not active_polls_checker(pollAnswer.user.id):
@@ -349,11 +354,11 @@ def add_question_to_json(message):
         "explanation": message.poll.explanation
     }
     JSONHandler_.json_list_appender("questions.json", question)
-    print("New question added to the question.json file.")
+    logging.info("New question added to the question.json file.")
 
 
 def main():
-    print("The bot is running.")
+    logging.info("The bot is running.")
     bot.infinity_polling()
 
 
