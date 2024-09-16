@@ -16,7 +16,7 @@ ____
 
 > ### 📦 _Build and run a new container:_
 >
->⏩`docker run --name bot bot`
+>⏩`docker run -d --restart always --name ilia-bot ilia-bot`
 
 > ### ▶️ _Run the existing container:_
 >
