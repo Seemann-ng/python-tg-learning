@@ -246,30 +246,30 @@ def question_command(message):
         send_quiz(message.chat.id)
 
 
-# @bot.message_handler(commands=["clear"])
-# def clear_command(message):
-#     """Remove info about active polls related to User from active_polls.json.
-#
-#     Args:
-#         message: Message from User with /clear command in it.
-#
-#     Returns:
-#         None.
-#
-#     """
-#     logging.info(
-#         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
-#     )
-#     active_polls = active_polls_checker(message.chat.id)
-#     if active_polls:
-#         for poll in active_polls:
-#             JSONHandler_.json_dict_popper("active_polls.json", poll)
-#             logging.info(f"Poll {poll} has been removed from active_polls.json.")
-#     bot.send_message(
-#         message.chat.id,
-#         "Your chat history has been cleared for the bot.\n(Your score hasn't been changed)"
-#     )
-#     logging.info(f"Active polls have been cleared for user {message.from_user.id} (id {message.chat.id}).")
+@bot.message_handler(commands=["clear"])
+def clear_command(message):
+    """Remove info about active polls related to User from active_polls.json.
+
+    Args:
+        message: Message from User with /clear command in it.
+
+    Returns:
+        None.
+
+    """
+    logging.info(
+        f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
+    )
+    active_polls = active_polls_checker(message.chat.id)
+    if active_polls:
+        for poll in active_polls:
+            JSONHandler_.json_dict_popper("active_polls.json", poll)
+            logging.info(f"Poll {poll} has been removed from active_polls.json.")
+    bot.send_message(
+        message.chat.id,
+        "Your chat history has been cleared for the bot.\n(Your score hasn't been changed)"
+    )
+    logging.info(f"Active polls have been cleared for user {message.from_user.id} (id {message.chat.id}).")
 
 
 @bot.message_handler(commands=["clear_my_score"])
