@@ -19,15 +19,14 @@
 > 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
 > by appending it to the message with the quiz.___
 >
->> __⚠️ When one of the commands above is used, if there is an unanswered question in the chat,\
->> ⚠️ bot will forward this question instead of sending a new one.__
+>> __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
 >
 > ⏩ `/my_score` __- Show your score.__
 > 
 > ⏩ `/clear_my_score` __- Remove your score from the bot's memory.__
 > 
-> __⚠️ For debug purpose, there is also hidden `/clear` command,️ which removes all active questions sent to the User\
-> ⚠️ from the bot's memory.__
+>> __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
+>> from the bot's memory.__
 
 ----
 
@@ -35,23 +34,23 @@
 
 > ### 📝 _Build an image:_
 >
-> ⏩ `docker build . -t bot`
+> ⏩ `docker build . -t image_name`
 
 > ### 📦 _Build and run a new container:_
 >
-> ⏩ `docker run -d --restart always --name ilia-bot ilia-bot`
+> ⏩ `docker run -d --restart always --name container_name image_name`
 
 > ### ▶️ _Run the existing container:_
 >
-> ⏩ `docker start bot`
+> ⏩ `docker start container_name`
 
 > ### ⏸ _Stop the container:_
 >
-> ⏩ `docker stop bot`
+> ⏩ `docker stop container_name`
 
 > ### 🗑  _Delete the container:_
 >
-> ⏩ `docker rm bot`
+> ⏩ `docker rm container_name` or `docker container rm container_name`
 >
 >> #### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name. ⛔️
 >>
