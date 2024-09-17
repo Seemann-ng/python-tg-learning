@@ -4,66 +4,66 @@
  ![image](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
  ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
-> #### _My Telegram bot for python learning._
+ #### _My Telegram bot for python learning._
 
 ----
 
  ## 📠 Interaction with the bot: 📠
 
-> ### ⌨️ _Commands:_ ⌨️
->
-> ⏩ `/start` __- Start chat.__
-> 
-> ⏩ `/question` __- Get a question from the bot.__
-> 
-> 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
-> by appending it to the message with the quiz.___
->
->> __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
->
-> ⏩ `/my_score` __- Show your score.__
-> 
-> ⏩ `/clear_my_score` __- Remove your score from the bot's memory.__
-> 
->> __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
->> from the bot's memory.__
+ ### ⌨️ _Commands:_ ⌨️
+
+ `/start` __- Start chat.__
+ 
+ `/question` __- Get a question from the bot.__
+ 
+ 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
+ by appending it to the message with the quiz.___
+ 
+ __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
+
+ `/my_score` __- Show your score.__
+ 
+ `/clear_my_score` __- Remove your score from the bot's memory.__
+
+ __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
+ from the bot's memory.__
 
 ----
 
  ## 🚢 Docker commands: 🚢
 
-> ### 📝 _Build an image:_
->
-> ⏩ `docker build . -t image_name`
+ ### 📝 _Build an image:_
 
-> ### 📦 _Build and run a new container:_
->
-> ⏩ `docker run -d --restart always --name container_name image_name`
+ `docker build . -t image_name`
 
-> ### ▶️ _Run the existing container:_
->
-> ⏩ `docker start container_name`
+ ### 📦 _Build and run a new container:_
 
-> ### ⏸ _Stop the container:_
->
-> ⏩ `docker stop container_name`
+ `docker run -d --restart always --name container_name image_name`
 
-> ### 🗑  _Delete the container:_
->
-> ⏩ `docker rm container_name` or `docker container rm container_name`
->
->> #### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name. ⛔️
->>
->> #### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name. ⚠️
+ ### ▶️ _Run the existing container:_
 
-> ### 🛂 _List of running containers:_ 🛂
->
-> ⏩ `docker ps`
+ `docker start container_name`
 
-> ### 🛅 _List of all containers:_ 🛅
->
-> ⏩ `docker ps -a`
+ ### ⏸ _Stop the container:_
 
-> ### 🛃 _List of all images:_ 🛃
->
-> ⏩ `docker image ls or docker images`
+ `docker stop container_name`
+
+ ### 🗑  _Delete the container:_
+
+ `docker rm container_name` or `docker container rm container_name`
+
+ #### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name.
+
+ #### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name.
+
+ ### 🛂 _List of running containers:_ 🛂
+
+ `docker ps`
+
+ ### 🛅 _List of all containers:_ 🛅
+
+ `docker ps -a`
+
+ ### 🛃 _List of all images:_ 🛃
+
+ `docker image ls or docker images`

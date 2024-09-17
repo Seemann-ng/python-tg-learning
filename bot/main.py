@@ -293,18 +293,18 @@ def clear_my_score_command(message):
 
 
 @bot.poll_answer_handler()
-def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
+def handle_poll_answer(poll_answer: types.PollAnswer):
     """Update scores.json file with new scores and send new poll to the user if there is no active one; or forward
     existing active poll to User.
 
     Args:
-        pollAnswer: Poll answer from user.
+        poll_answer: Poll answer from user.
 
     Returns:
         None.
 
     """
-    doc_link = JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)]["doc_link"]
+    doc_link = JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["doc_link"]
     """Providing article link to User.
     
     """
@@ -314,15 +314,15 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
         article = types.InlineKeyboardButton(text="Article", url=doc_link)
         markup.add(article)
         bot.edit_message_reply_markup(
-            chat_id=pollAnswer.user.id,
-            message_id=JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)]["message_id"],
+            chat_id=poll_answer.user.id,
+            message_id=JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["message_id"],
             reply_markup=markup
         )
         logging.info(f"Documentation link has been provided to User.")
 
-    logging.info(f"User {pollAnswer.user.username} (id {pollAnswer.user.id}) answered {pollAnswer.option_ids[0]}.")
+    logging.info(f"User {poll_answer.user.username} (id {poll_answer.user.id}) answered {poll_answer.option_ids[0]}.")
     initial_user_score = {
-        pollAnswer.user.id: {
+        poll_answer.user.id: {
             "correct": 0,
             "total": 0
         }
@@ -332,47 +332,47 @@ def handle_poll_answer(pollAnswer: telebot.types.PollAnswer):
     """Checking weather the entry about the user is absent in scores.json and make a new entry if so.
         
     """
-    if str(pollAnswer.user.id) not in list(scores)[:]:
+    if str(poll_answer.user.id) not in list(scores)[:]:
         JSONHandler_.json_dict_updater("scores.json", initial_user_score)
-        logging.info(f"New user entry \"{pollAnswer.user.id}\" has been added to the scores.json.")
+        logging.info(f"New user entry \"{poll_answer.user.id}\" has been added to the scores.json.")
         scores = JSONHandler_.json_reader("scores.json")
 
-    if pollAnswer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)]["correct_op_id"]:
+    if poll_answer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["correct_op_id"]:
         """Checking if the answer is correct and update scores variable accordingly.
         
         """
-        scores[str(pollAnswer.user.id)]["correct"] += 1
-        scores[str(pollAnswer.user.id)]["total"] += 1
-    elif pollAnswer.option_ids[0] != JSONHandler_.json_reader("active_polls.json")[str(pollAnswer.poll_id)]["correct_op_id"]:
-        scores[str(pollAnswer.user.id)]["total"] += 1
+        scores[str(poll_answer.user.id)]["correct"] += 1
+        scores[str(poll_answer.user.id)]["total"] += 1
+    elif poll_answer.option_ids[0] != JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["correct_op_id"]:
+        scores[str(poll_answer.user.id)]["total"] += 1
 
     JSONHandler_.json_dict_updater("scores.json", scores)
     """Update scores.json file.
     
     """
-    logging.info(f"User score for entry \"{pollAnswer.user.id}\" has been updated.")
+    logging.info(f"User score for entry \"{poll_answer.user.id}\" has been updated.")
 
-    logging.info(f"Active poll {pollAnswer.poll_id} is being closed.")
+    logging.info(f"Active poll {poll_answer.poll_id} is being closed.")
     """Deleting info about current poll from active_polls.json file.
     
     """
-    JSONHandler_.json_dict_popper("active_polls.json", pollAnswer.poll_id)
+    JSONHandler_.json_dict_popper("active_polls.json", poll_answer.poll_id)
     logging.info(f"Poll has been closed.")
-    bot.send_chat_action(pollAnswer.user.id, 'typing')
+    bot.send_chat_action(poll_answer.user.id, 'typing')
     time.sleep(0.5)
 
-    active_poll = active_polls_checker(pollAnswer.user.id)
+    active_poll = active_polls_checker(poll_answer.user.id)
     """Checking if there is any active poll.
     
     """
     if active_poll:
         bot.forward_message(
-            pollAnswer.user.id,
-            pollAnswer.user.id,
+            poll_answer.user.id,
+            poll_answer.user.id,
             active_poll[list(active_poll)[0]]
         )
     else:
-        send_quiz(pollAnswer.user.id)
+        send_quiz(poll_answer.user.id)
 
 
 @bot.message_handler(content_types=["poll"])
