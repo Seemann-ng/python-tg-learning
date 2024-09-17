@@ -19,7 +19,7 @@
 > 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
 > by appending it to the message with the quiz.___
 >
->> __⚠️ When one of the commands above is used, if there is an unanswered question in the chat with User,\
+>> __⚠️ When one of the commands above is used, if there is an unanswered question in the chat,\
 >> ⚠️ bot will forward this question instead of sending a new one.__
 >
 > ⏩ `/my_score` __- Show your score.__
