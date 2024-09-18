@@ -42,9 +42,6 @@ class JSONHandler_:
             filename: Name of .json file to write in.
             written: Data to be written into .json file.
 
-        Returns:
-            None.
-
         """
         with open(filename, "w", encoding="utf-8") as openjson:
             json.dump(written, openjson, indent=4, ensure_ascii=False)
@@ -56,9 +53,6 @@ class JSONHandler_:
         Args:
             file_changed: Name of .json file to be modified.
             added: List or dictionary with data that is to be added to .json file.
-
-        Returns:
-            None.
 
         """
         json_being_changed: List[dict[str: str or int]] = JSONHandler_.json_reader(file_changed)
@@ -73,9 +67,6 @@ class JSONHandler_:
             file_changed: Name of .json file to be modified.
             added: Dictionary with data that is to be added to .json file.
 
-        Returns:
-            None.
-
         """
         json_being_changed: dict[str: str or int] = JSONHandler_.json_reader(file_changed)
         json_being_changed.update(added)
@@ -88,9 +79,6 @@ class JSONHandler_:
         Args:
             file_changed: Name of .json file to be modified.
             popped: Key of item to be popped.
-
-        Returns:
-            None.
 
         """
         json_being_changed: dict[str: str or int] = JSONHandler_.json_reader(file_changed)
@@ -129,9 +117,6 @@ def send_quiz(cid):
     Args:
         cid: Chat ID of the chat with user.
 
-    Returns:
-        None.
-
     """
     bot.send_chat_action(cid, "typing")
     time.sleep(0.5)
@@ -167,9 +152,6 @@ def start_command(message):
     Args:
         message: Message from User with /start command in it.
 
-    Returns:
-        None.
-
     """
     logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
@@ -195,9 +177,6 @@ def my_score_command(message):
 
     Args:
         message: Message from User with /my_score command in it.
-
-    Returns:
-        None.
 
     """
     logging.info(
@@ -228,9 +207,6 @@ def question_command(message):
     Args:
         message: Message from User with /question command in it.
 
-    Returns:
-        None.
-
     """
     logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
@@ -252,9 +228,6 @@ def clear_command(message):
 
     Args:
         message: Message from User with /clear command in it.
-
-    Returns:
-        None.
 
     """
     logging.info(
@@ -279,9 +252,6 @@ def clear_my_score_command(message):
     Args:
         message: Message from User with /clear_my_score command in it.
 
-    Returns:
-        None.
-
     """
     logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
@@ -299,9 +269,6 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
 
     Args:
         poll_answer: Poll answer from user.
-
-    Returns:
-        None.
 
     """
     doc_link = JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["doc_link"]
@@ -382,9 +349,6 @@ def add_question_to_json(message):
     Args:
         message: Received poll-type message.
 
-    Returns:
-        None.
-
     """
     question = {
         "question": message.poll.question,
@@ -403,9 +367,6 @@ def non_command(message):
 
     Args:
         message: Message from User with no command in it.
-
-    Returns:
-        None.
 
     """
     logging.info(
