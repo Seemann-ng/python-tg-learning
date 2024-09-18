@@ -34,36 +34,58 @@
 
  ### 📝 _Build an image:_
 
- `docker build . -t image_name`
+ ```bash
+ docker build . -t image_name
+ ```
 
  ### 📦 _Build and run a new container:_
 
- `docker run -d --restart always --name container_name image_name`
+ ```bash
+ docker run -d --restart always --name container_name image_name
+ ```
 
  ### ▶️ _Run the existing container:_
 
- `docker start container_name`
+ ```bash
+ docker start container_name
+ ```
 
  ### ⏸ _Stop the container:_
 
- `docker stop container_name`
+ ```bash
+ docker stop container_name
+ ```
 
  ### 🗑  _Delete the container:_
 
- `docker rm container_name` or `docker container rm container_name`
+ ```bash
+ docker rm container_name
+ ```
+
+ _or_
+
+ ```bash
+ docker container rm container_name
+ ```
 
  #### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name.
 
  #### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name.
 
- ### 🛂 _List of running containers:_ 🛂
+ ### 🛂 _List of running containers:_
 
- `docker ps`
+ ```bash
+ docker ps
+ ```
 
- ### 🛅 _List of all containers:_ 🛅
+ ### 🛅 _List of all containers:_
 
- `docker ps -a`
+ ```bash
+ docker ps -a
+ ```
 
- ### 🛃 _List of all images:_ 🛃
+ ### 🛃 _List of all images:_
 
- `docker image ls or docker images`
+ ```bash
+ docker image ls or docker images
+ ```
