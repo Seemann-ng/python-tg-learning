@@ -18,13 +18,17 @@
 
 - __Run the following commands from the project directory:__
 
-  ```bash
-    docker image build . -t IMAGE-NAME
-  ```
-     
-  ```bash
-    docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
-  ```
+  - __Build a docker image of the bot with:__
+
+    ```bash
+      docker image build . -t IMAGE-NAME
+    ```
+  
+  - __Run a docker container with the bot with:__
+
+    ```bash
+      docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
+    ```
 
 ----
 
