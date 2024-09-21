@@ -1,91 +1,111 @@
- # 🤖 Telegram quiz-bot for learning python 🤖
+# 🤖 Telegram quiz-bot for learning python 🤖
 
- ![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
- ![image](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
- ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+![image](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
+![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
- #### _My Telegram bot for python learning._
+#### _My Telegram bot for python learning._
 
-----
-
- ## 📠 Interaction with the bot: 📠
-
- ### ⌨️ _Commands:_ ⌨️
-
- `/start` __- Start chat.__
- 
- `/question` __- Get a question from the bot.__
- 
- 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
- by appending it to the message with the quiz.___
- 
- __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
-
- `/my_score` __- Show your score.__
- 
- `/clear_my_score` __- Remove your score from the bot's memory.__
-
- __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
- from the bot's memory.__
+> ___Bot is available on https://t.me/Seemann_ng_bot___
 
 ----
 
- ## 🚢 Docker commands: 🚢
+## 💾 Installation: 💾
 
- ### 📝 _Build an image:_
+- __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`__
 
- ```bash
- docker build . -t image_name
- ```
+- __Run `docker engine`__
 
- ### 📦 _Build and run a new container:_
+- __Run the following commands from the project directory:__
 
- ```bash
- docker run -d --restart always --name container_name image_name
- ```
+  ```bash
+    docker image build . -t IMAGE-NAME
+  ```
+     
+  ```bash
+    docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
+  ```
 
- ### ▶️ _Run the existing container:_
+----
 
- ```bash
- docker start container_name
- ```
+## 📠 Interaction with the bot: 📠
 
- ### ⏸ _Stop the container:_
+### ⌨️ _Commands:_ ⌨️
 
- ```bash
- docker stop container_name
- ```
+`/start` __- Start chat.__
+ 
+`/question` __- Get a question from the bot.__
+ 
+💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
+by appending it to the message with the quiz.___
+ 
+__⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
 
- ### 🗑  _Delete the container:_
+`/my_score` __- Show your score.__
+ 
+`/clear_my_score` __- Remove your score from the bot's memory.__
 
- ```bash
- docker rm container_name
- ```
+__⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
+from the bot's memory.__
 
- _or_
+----
 
- ```bash
- docker container rm container_name
- ```
+## 🚢 Docker commands: 🚢
 
- #### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name.
+### 📝 _Build an image:_
 
- #### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name.
+```bash
+docker build . -t image_name
+```
 
- ### 🛂 _List of running containers:_
+### 📦 _Build and run a new container:_
 
- ```bash
- docker ps
- ```
+```bash
+docker run -d --restart always --name container_name image_name
+```
 
- ### 🛅 _List of all containers:_
+### ▶️ _Run the existing container:_
 
- ```bash
- docker ps -a
- ```
+```bash
+docker start container_name
+```
 
- ### 🛃 _List of all images:_
+### ⏸ _Stop the container:_
 
- ```bash
- docker image ls or docker images
- ```
+```bash
+docker stop container_name
+```
+
+### 🗑  _Delete the container:_
+
+```bash
+docker rm container_name
+```
+
+___or___
+
+```bash
+docker container rm container_name
+```
+
+#### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name.
+
+#### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name.
+
+### 🛂 _List of running containers:_
+
+```bash
+docker ps
+```
+
+### 🛅 _List of all containers:_
+
+```bash
+docker ps -a
+```
+
+### 🛃 _List of all images:_
+
+```bash
+docker image ls or docker images
+```

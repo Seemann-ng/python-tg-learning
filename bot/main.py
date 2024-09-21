@@ -1,95 +1,26 @@
-import json
 import logging
 import random
 import time
-from typing import List
+from typing import Dict
 
 import telebot
 import telebot.types as types
 
 import credentials
+from jsonhandler import JSONHandler_ as JSONHandler
 
 bot = telebot.TeleBot(credentials.BOT_TOKEN, parse_mode=None)
 logging.basicConfig(
     filename="log.txt",
-    filemode="w",
+    filemode="a",
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-
-class JSONHandler_:
-    @staticmethod
-    def json_reader(filename: str) -> List[dict[str: str or int]] or dict[str: str or int]:
-        """Read data from .json file and convert it to list or dictionary.
-
-        Args:
-            filename: Name of .json file to read.
-
-        Returns:
-            Data from .json file.
-
-        """
-        with open(filename, "r", encoding="utf-8") as openfile:
-            readable_data = json.load(openfile)
-        return readable_data
-
-    @staticmethod
-    def json_writer(filename: str, written: List[dict[str: str or int]] or dict[str: str or int]):
-        """Make or rewrite .json file containing data form given list or dictionary.
-
-        Args:
-            filename: Name of .json file to write in.
-            written: Data to be written into .json file.
-
-        """
-        with open(filename, "w", encoding="utf-8") as openjson:
-            json.dump(written, openjson, indent=4, ensure_ascii=False)
-
-    @staticmethod
-    def json_list_appender(file_changed: str, added: dict[str: str or int] or List[dict[str: str or int]]):
-        """Append given dictionary or list to given list-format .json file.
-
-        Args:
-            file_changed: Name of .json file to be modified.
-            added: List or dictionary with data that is to be added to .json file.
-
-        """
-        json_being_changed: List[dict[str: str or int]] = JSONHandler_.json_reader(file_changed)
-        json_being_changed.append(added)
-        JSONHandler_.json_writer(file_changed, json_being_changed)
-
-    @staticmethod
-    def json_dict_updater(file_changed: str, added: dict[str: str or int]):
-        """Update given dictionary-format .json with new key: value pairs.
-
-        Args:
-            file_changed: Name of .json file to be modified.
-            added: Dictionary with data that is to be added to .json file.
-
-        """
-        json_being_changed: dict[str: str or int] = JSONHandler_.json_reader(file_changed)
-        json_being_changed.update(added)
-        JSONHandler_.json_writer(file_changed, json_being_changed)
-
-    @staticmethod
-    def json_dict_popper(file_changed: str, popped: str):
-        """Pop item from dictionary-format .json file.
-
-        Args:
-            file_changed: Name of .json file to be modified.
-            popped: Key of item to be popped.
-
-        """
-        json_being_changed: dict[str: str or int] = JSONHandler_.json_reader(file_changed)
-        json_being_changed.pop(popped)
-        JSONHandler_.json_writer(file_changed, json_being_changed)
+questions = JSONHandler.json_reader("questions.json")
 
 
-questions = JSONHandler_.json_reader("questions.json")
-
-
-def active_polls_checker(usr_id: int) -> dict[str: int] or False:
+def active_polls_checker(usr_id: int) -> Dict[str, int] | False:
     """Check if there is any active quiz with this user.
 
     Args:
@@ -99,7 +30,7 @@ def active_polls_checker(usr_id: int) -> dict[str: int] or False:
         Dict of poll IDs of active quizzes with user as keys and their message IDs as values, or False if there isn't any.
 
     """
-    active_polls = JSONHandler_.json_reader("active_polls.json")
+    active_polls = JSONHandler.json_reader("active_polls.json")
     poll_ids = dict()
     for poll in active_polls:
         if active_polls[poll]["user_id"] == usr_id:
@@ -110,7 +41,7 @@ def active_polls_checker(usr_id: int) -> dict[str: int] or False:
         return poll_ids
 
 
-def send_quiz(cid):
+def send_quiz(cid: int) -> None:
     """Send quiz-type poll to user; update active_polls.json adding info about poll, message and user IDs,
     correct option index and link to article on the topic of the quiz.
 
@@ -141,12 +72,12 @@ def send_quiz(cid):
             "doc_link": questions[question_number]["doc_link"]
         }
     }
-    JSONHandler_.json_dict_updater("active_polls.json", poll_info)
+    JSONHandler.json_dict_updater("active_polls.json", poll_info)
     logging.info(f"Poll {poll.json["poll"]["id"]} has been opened.")
 
 
 @bot.message_handler(commands=["start"])
-def start_command(message):
+def start_command(message: types.Message) -> None:
     """Start chat with user by sending them welcome message and a poll once /start command received.
 
     Args:
@@ -172,7 +103,7 @@ def start_command(message):
 
 
 @bot.message_handler(commands=["my_score"])
-def my_score_command(message):
+def my_score_command(message: types.Message) -> None:
     """Tell user their score in X-out-of-Y format or inform them they aren't scored yet.
 
     Args:
@@ -186,12 +117,12 @@ def my_score_command(message):
     bot.send_chat_action(message.chat.id, "typing")
     time.sleep(0.5)
 
-    if str(message.from_user.id) in list(JSONHandler_.json_reader("scores.json"))[:]:
-        user_scores = JSONHandler_.json_reader("scores.json")[str(message.from_user.id)]
+    if str(message.from_user.id) in list(JSONHandler.json_reader("scores.json"))[:]:
+        user_scores = JSONHandler.json_reader("scores.json")[str(message.from_user.id)]
         bot.send_message(
             message.chat.id,
             f"Your score is {user_scores["correct"]} out of {user_scores["total"]} "
-            f"({round(user_scores["correct"]/user_scores["total"] * 100)}%)."
+            f"({round(user_scores["correct"] / user_scores["total"] * 100)}%)."
         )
         logging.info(f"Score request for user ID {message.from_user.id} succeed.")
     else:
@@ -200,7 +131,7 @@ def my_score_command(message):
 
 
 @bot.message_handler(commands=["question"])
-def question_command(message):
+def question_command(message: types.Message) -> None:
     """Send user a poll once the /question command is received if there is no active one; or forward
     existing active poll to User.
 
@@ -223,7 +154,7 @@ def question_command(message):
 
 
 @bot.message_handler(commands=["clear"])
-def clear_command(message):
+def clear_command(message: types.Message) -> None:
     """Remove info about active polls related to User from active_polls.json.
 
     Args:
@@ -236,7 +167,7 @@ def clear_command(message):
     active_polls = active_polls_checker(message.chat.id)
     if active_polls:
         for poll in active_polls:
-            JSONHandler_.json_dict_popper("active_polls.json", poll)
+            JSONHandler.json_dict_popper("active_polls.json", poll)
             logging.info(f"Poll {poll} has been removed from active_polls.json.")
     bot.send_message(
         message.chat.id,
@@ -246,7 +177,7 @@ def clear_command(message):
 
 
 @bot.message_handler(commands=["clear_my_score"])
-def clear_my_score_command(message):
+def clear_my_score_command(message: types.Message) -> None:
     """Remove score entry of User from scores.json.
 
     Args:
@@ -256,14 +187,14 @@ def clear_my_score_command(message):
     logging.info(
         f"\"{message.text}\" command from user {message.from_user.username} (id {message.from_user.id}) has been received."
     )
-    if str(message.from_user.id) in list(JSONHandler_.json_reader("scores.json"))[:]:
-        JSONHandler_.json_dict_popper("scores.json", str(message.from_user.id))
+    if str(message.from_user.id) in list(JSONHandler.json_reader("scores.json"))[:]:
+        JSONHandler.json_dict_popper("scores.json", str(message.from_user.id))
     bot.send_message(message.chat.id, "Your score record has been removed.")
     logging.info(f"Score record for user {message.from_user.username} (id {message.from_user.id}) has been removed.")
 
 
 @bot.poll_answer_handler()
-def handle_poll_answer(poll_answer: types.PollAnswer):
+def handle_poll_answer(poll_answer: types.PollAnswer) -> None:
     """Update scores.json file with new scores and send new poll to the user if there is no active one; or forward
     existing active poll to User.
 
@@ -271,7 +202,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
         poll_answer: Poll answer from user.
 
     """
-    doc_link = JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["doc_link"]
+    doc_link = JSONHandler.json_reader("active_polls.json")[str(poll_answer.poll_id)]["doc_link"]
     """Providing article link to User.
     
     """
@@ -282,38 +213,40 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
         markup.add(article)
         bot.edit_message_reply_markup(
             chat_id=poll_answer.user.id,
-            message_id=JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["message_id"],
+            message_id=JSONHandler.json_reader("active_polls.json")[str(poll_answer.poll_id)]["message_id"],
             reply_markup=markup
         )
         logging.info(f"Documentation link has been provided to User.")
 
     logging.info(f"User {poll_answer.user.username} (id {poll_answer.user.id}) answered {poll_answer.option_ids[0]}.")
     initial_user_score = {
-        poll_answer.user.id: {
+        str(poll_answer.user.id): {
             "correct": 0,
             "total": 0
         }
     }
 
-    scores: dict[str: List[int]] = JSONHandler_.json_reader("scores.json")
+    scores: Dict[str, Dict[str, int]] = JSONHandler.json_reader("scores.json")
     """Checking weather the entry about the user is absent in scores.json and make a new entry if so.
         
     """
     if str(poll_answer.user.id) not in list(scores)[:]:
-        JSONHandler_.json_dict_updater("scores.json", initial_user_score)
+        JSONHandler.json_dict_updater("scores.json", initial_user_score)
         logging.info(f"New user entry \"{poll_answer.user.id}\" has been added to the scores.json.")
-        scores = JSONHandler_.json_reader("scores.json")
+        scores = JSONHandler.json_reader("scores.json")
 
-    if poll_answer.option_ids[0] == JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["correct_op_id"]:
+    if poll_answer.option_ids[0] == JSONHandler.json_reader("active_polls.json")[str(poll_answer.poll_id)][
+        "correct_op_id"]:
         """Checking if the answer is correct and update scores variable accordingly.
         
         """
         scores[str(poll_answer.user.id)]["correct"] += 1
         scores[str(poll_answer.user.id)]["total"] += 1
-    elif poll_answer.option_ids[0] != JSONHandler_.json_reader("active_polls.json")[str(poll_answer.poll_id)]["correct_op_id"]:
+    elif poll_answer.option_ids[0] != JSONHandler.json_reader("active_polls.json")[str(poll_answer.poll_id)][
+        "correct_op_id"]:
         scores[str(poll_answer.user.id)]["total"] += 1
 
-    JSONHandler_.json_dict_updater("scores.json", scores)
+    JSONHandler.json_dict_updater("scores.json", scores)
     """Update scores.json file.
     
     """
@@ -323,7 +256,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
     """Deleting info about current poll from active_polls.json file.
     
     """
-    JSONHandler_.json_dict_popper("active_polls.json", poll_answer.poll_id)
+    JSONHandler.json_dict_popper("active_polls.json", poll_answer.poll_id)
     logging.info(f"Poll has been closed.")
     bot.send_chat_action(poll_answer.user.id, 'typing')
     time.sleep(0.5)
@@ -343,7 +276,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer):
 
 
 @bot.message_handler(content_types=["poll"])
-def add_question_to_json(message):
+def add_question_to_json(message) -> None:
     """Add new poll info from received poll-type message to the questions.json file.
 
     Args:
@@ -357,12 +290,12 @@ def add_question_to_json(message):
         "explanation": message.poll.explanation,
         "doc_link": 0
     }
-    JSONHandler_.json_list_appender("questions.json", question)
+    JSONHandler.json_list_appender("questions.json", question)
     logging.info("New question added to the question.json file.")
 
 
 @bot.message_handler(func=lambda message: True)
-def non_command(message):
+def non_command(message: types.Message) -> None:
     """Handle non-command message with sending a message to User.
 
     Args:
@@ -382,7 +315,7 @@ def non_command(message):
         f"/start to start the chat;\n"
         f"/question to get a question from the bot;\n"
         f"/my_score to get Your score;\n"
-        # f"/clear to clear chat history for the bot;\n"
+        f"/clear to clear chat history for the bot;\n"
         f"/clear_my_score to clear Your score for the bot."
     )
 
