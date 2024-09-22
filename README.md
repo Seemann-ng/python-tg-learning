@@ -14,7 +14,7 @@
 
 - __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
 
-- __Run `docker engine`.__
+- __Run `Docker Engine`.__
 
 - __Run the following commands from the project directory:__
 
