@@ -10,7 +10,7 @@
 
 ----
 
-## 💾 Installation: 💾
+## 💾 Deployment: 💾
 
 - __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
 
