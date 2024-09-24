@@ -36,18 +36,18 @@
 
 ### ⌨️ _Commands:_ ⌨️
 
-`/start` __- Start chat.__
+`/start` __- start chat.__
  
-`/question` __- Get a question from the bot.__
+`/question` __- get a question from the bot.__
  
 💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
 by appending it to the message with the quiz.___
  
 __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
 
-`/my_score` __- Show your score.__
+`/my_score` __- show your score.__
  
-`/clear_my_score` __- Remove your score from the bot's memory.__
+`/clear_my_score` __- remove your score from the bot's memory.__
 
 __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
 from the bot's memory.__
