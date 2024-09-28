@@ -8,7 +8,7 @@ My Telegram bot for python learning.
 
 Bot is available on https://t.me/Seemann_ng_bot
 
-## 💾 Deployment: 💾
+## 💾 Deployment:
 
 1. __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
 
@@ -28,9 +28,9 @@ Bot is available on https://t.me/Seemann_ng_bot
       docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
     ```
 
-## 📠 Interaction with the bot: 📠
+## 📠 Interaction with the bot:
 
-### ⌨️ _Commands:_ ⌨️
+### ⌨️ _Commands:_
 
 `/start` __- start chat.__
  
@@ -48,7 +48,7 @@ __⚠️ When one of the commands above is used, if there is an unanswered quest
 __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
 from the bot's memory.__
 
-## 🚢 Docker commands: 🚢
+## 🚢 Docker commands:
 
 ### 📝 _Build an image:_
 
