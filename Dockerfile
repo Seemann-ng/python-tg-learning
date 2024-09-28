@@ -4,10 +4,8 @@ LABEL authors="Seemann-ng"
 COPY requirements.txt /app/requirements.txt
 RUN pip3 install -r /app/requirements.txt
 
-COPY bot /app/bot
-COPY jsonhandler /app/jsonhandler
-
-WORKDIR /app/bot
+COPY . /app
+WORKDIR /app
 
 ENV PYTHONPATH="${PYTHONPATH}:/app"
 ENV PYTHONUNBUFFERED=1

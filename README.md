@@ -1,36 +1,32 @@
-# 🤖 Telegram quiz-bot for learning python 🤖
+# 🤖 Telegram quiz-bot for learning python
 
 ![image](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
 ![image](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
-#### _My Telegram bot for python learning._
+My Telegram bot for python learning.
 
-> ___Bot is available on https://t.me/Seemann_ng_bot___
-
-----
+Bot is available on https://t.me/Seemann_ng_bot
 
 ## 💾 Deployment: 💾
 
-- __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
+1. __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
 
-- __Run `Docker Engine`.__
+2. __Run `Docker Engine`.__
 
-- __Run the following commands from the project directory:__
+3. __Run the following commands from the project directory:__
 
-  - __Build a docker image of the bot with:__
+- Build a docker image of the bot with:
 
     ```bash
       docker image build . -t IMAGE-NAME
     ```
   
-  - __Run a docker container with the bot with:__
+- Run a docker container with the bot with:
 
     ```bash
       docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
     ```
-
-----
 
 ## 📠 Interaction with the bot: 📠
 
@@ -51,8 +47,6 @@ __⚠️ When one of the commands above is used, if there is an unanswered quest
 
 __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
 from the bot's memory.__
-
-----
 
 ## 🚢 Docker commands: 🚢
 
