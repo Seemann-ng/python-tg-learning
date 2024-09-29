@@ -8,102 +8,51 @@ My Telegram bot for python learning.
 
 Bot is available on https://t.me/Seemann_ng_bot
 
-## 💾 Deployment:
+## 💾 Build and run:
 
-1. __Insert Your bot token into field "BOT_TOKEN" in `credentials.py`.__
+Run the following command to start the bot:
 
-2. __Run `Docker Engine`.__
+```bash
+docker-compose up -d
+```
 
-3. __Run the following commands from the project directory:__
+## 🔐 Environment:
 
-- Build a docker image of the bot with:
+In the `.env` file, or through the `-e` flags, you must set the required variables from
+tables below.
 
-    ```bash
-      docker image build . -t IMAGE-NAME
-    ```
-  
-- Run a docker container with the bot with:
-
-    ```bash
-      docker container run -d --restart always --name CONTAINER_NAME IMAGE-NAME
-    ```
+| Variable    | Default        | Description        |
+|-------------|----------------|--------------------|
+| `BOT_TOKEN` | **(required)** | Telegram bot token |
 
 ## 📠 Interaction with the bot:
 
-### ⌨️ _Commands:_
+### ⌨️ Commands:
 
-`/start` __- start chat.__
+`/start` - start chat.
  
-`/question` __- get a question from the bot.__
+`/question` - get a question from the bot.
  
-💡 ___Once the question is answered, bot will provide a link to the article on the topic of the question\
-by appending it to the message with the quiz.___
+💡 __Once the question is answered, bot will provide a link to the article on the topic of the question by appending it to the message with the quiz.__
  
 __⚠️ When one of the commands above is used, if there is an unanswered question in the chat, bot will forward this question instead of sending a new one.__
 
-`/my_score` __- show your score.__
+`/my_score` - show your score.
  
-`/clear_my_score` __- remove your score from the bot's memory.__
+`/clear_my_score` - remove your score from the bot's memory.
 
 __⚠️ For debug purpose, there is hidden `/clear` command,️ which removes active questions sent to the User 
 from the bot's memory.__
 
-## 🚢 Docker commands:
+## 👨‍🔧Built with:
 
-### 📝 _Build an image:_
+* [Python 3.12](https://www.python.org/) - programming language
+* [PyCharm](https://www.jetbrains.com/pycharm/) - IDE from JetBrains
 
-```bash
-docker build . -t image_name
-```
+## 👨‍💻 Author:
 
-### 📦 _Build and run a new container:_
+* **Ilia Tashkenov (_セーラー_)** - [Seemann-ng](https://github.com/Seemann-ng)
 
-```bash
-docker run -d --restart always --name container_name image_name
-```
+## 📝 License:
 
-### ▶️ _Run the existing container:_
-
-```bash
-docker start container_name
-```
-
-### ⏸ _Stop the container:_
-
-```bash
-docker stop container_name
-```
-
-### 🗑  _Delete the container:_
-
-```bash
-docker rm container_name
-```
-
-___or___
-
-```bash
-docker container rm container_name
-```
-
-#### ⛔️ You have _NOT_ to delete an old _IMAGE_ when creating a new one with the same name.
-
-#### ⚠️ You _HAVE TO DELETE_ an old _CONTAINER_ when creating a new one with the same name.
-
-### 🛂 _List of running containers:_
-
-```bash
-docker ps
-```
-
-### 🛅 _List of all containers:_
-
-```bash
-docker ps -a
-```
-
-### 🛃 _List of all images:_
-
-```bash
-docker image ls or docker images
-```
+This project is licensed under the MIT License - see the [license website](https://opensource.org/licenses/MIT) for details
