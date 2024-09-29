@@ -13,7 +13,7 @@ Bot is available on https://t.me/Seemann_ng_bot
 Run the following command to start the bot:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## 🔐 Environment:
