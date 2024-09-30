@@ -5,7 +5,6 @@ COPY requirements.txt /app/requirements.txt
 RUN pip3 install -r /app/requirements.txt
 
 COPY bot /app
-COPY tools.py /app
 
 WORKDIR /app
 
