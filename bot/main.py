@@ -21,7 +21,8 @@ polls_handler = JSONHandler("active_polls.json")
 questions_handler = JSONHandler("questions.json")
 scores_handler = JSONHandler("scores.json")
 
-def active_polls_checker(usr_id: int) -> Dict[str, int] | False:
+
+def active_polls_checker(usr_id: int) -> Dict[str, int]:
     """Check if there is any active quiz with this user.
 
     Args:
@@ -36,7 +37,7 @@ def active_polls_checker(usr_id: int) -> Dict[str, int] | False:
     for poll in active_polls:
         if active_polls[poll]["user_id"] == usr_id:
             poll_ids[poll] = active_polls[poll]["message_id"]
-    return poll_ids or False
+    return poll_ids
 
 
 def send_quiz(cid: int) -> None:
@@ -153,10 +154,9 @@ def clear_command(message: types.Message) -> None:
 
     """
     active_polls = active_polls_checker(message.chat.id)
-    if active_polls:
-        for poll in active_polls:
-            polls_handler.dict_pop(poll)
-            logger.info(f"Poll {poll} has been removed from active_polls.json.")
+    for poll in active_polls:
+        polls_handler.dict_pop(poll)
+        logger.info(f"Poll {poll} has been removed from active_polls.json.")
     bot.send_message(message.chat.id, botmessages.CLEAR_CHAT_HISTORY)
     logger.info(f"Active polls have been cleared for user {message.from_user.username} ({message.chat.id}).")
 
@@ -186,8 +186,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer) -> None:
 
     """
     # Providing article link to User.
-    doc_link = polls_handler.read()[poll_answer.poll_id]["doc_link"]
-    if doc_link:
+    if doc_link := polls_handler.read()[poll_answer.poll_id]["doc_link"]:
         logger.info(f"Documentation link is being provided to User.")
         markup = telebot.types.InlineKeyboardMarkup(row_width=1)
         article = types.InlineKeyboardButton(text="Article", url=doc_link)
@@ -219,9 +218,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer) -> None:
     correct_answer = polls_handler.read()[poll_answer.poll_id]["correct_op_id"]
     if poll_answer.option_ids[0] == correct_answer:
         scores[uid]["correct"] += 1
-        scores[uid]["total"] += 1
-    elif poll_answer.option_ids[0] != correct_answer:
-        scores[uid]["total"] += 1
+    scores[uid]["total"] += 1
 
     # Update scores.json file.
     scores_handler.dict_update(scores)
@@ -233,7 +230,7 @@ def handle_poll_answer(poll_answer: types.PollAnswer) -> None:
     logger.info(f"Poll has been closed.")
     bot.send_chat_action(poll_answer.user.id, 'typing')
     time.sleep(0.5)
-    
+
     # Checking if there is any active poll.
     active_poll = active_polls_checker(uid)
     if active_poll:
