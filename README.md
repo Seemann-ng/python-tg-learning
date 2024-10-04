@@ -51,7 +51,7 @@ from the bot's memory.__
 
 ## 👨‍💻 Author:
 
-* **Ilia Tashkenov (_セーラー_)** - [Seemann-ng](https://github.com/Seemann-ng)
+* **Ilia Tashkenov (_セーラー_)** - [Seemann-ng](https://github.com/Seemann-ng), 2024
 
 ## 📝 License:
 
