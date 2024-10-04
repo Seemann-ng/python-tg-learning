@@ -10,6 +10,7 @@ logging.basicConfig(
 
 logger = logging.getLogger("bot_logger")
 
+
 def logger_decorator(func):
     @functools.wraps(func)
     def wrapper(message: types.Message):
