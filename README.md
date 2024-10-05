@@ -6,7 +6,7 @@
 
 My Telegram bot for python learning.
 
-Bot is available on https://t.me/Seemann_ng_bot
+Bot is available [here](https://t.me/Seemann_ng_bot).
 
 ## 💾 Build and run:
 
@@ -21,9 +21,9 @@ docker compose up -d --build
 In the `.env` file, or through the `-e` flags, you must set the required variables from
 tables below.
 
-| Variable    | Default        | Description        |
-|-------------|----------------|--------------------|
-| `BOT_TOKEN` | **(required)** | Telegram bot token |
+| Variable    | Default        | Description         |
+|-------------|----------------|---------------------|
+| `BOT_TOKEN` | **(required)** | Telegram bot token. |
 
 ## 📠 Interaction with the bot:
 
@@ -46,13 +46,13 @@ from the bot's memory.__
 
 ## 👨‍🔧Built with:
 
-* [Python 3.12](https://www.python.org/) - programming language
-* [PyCharm](https://www.jetbrains.com/pycharm/) - IDE from JetBrains
+* [Python 3.12](https://www.python.org/) - programming language.
+* [PyCharm](https://www.jetbrains.com/pycharm/) - IDE from JetBrains.
 
 ## 👨‍💻 Author:
 
-* **Ilia Tashkenov (_セーラー_)** - [Seemann-ng](https://github.com/Seemann-ng), 2024
+* **Ilia Tashkenov (_セーラー_)** - [Seemann-ng](https://github.com/Seemann-ng), 2024.
 
 ## 📝 License:
 
-This project is licensed under the MIT License - see the [license website](https://opensource.org/licenses/MIT) for details
+This project is licensed under the MIT License - see the [license website](https://opensource.org/licenses/MIT) for details.
